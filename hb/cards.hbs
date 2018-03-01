@@ -1,40 +1,31 @@
 <div class="card-header">
-            <div class="row"><div class="col-sm-10">
-            <h2 id="title">{{title}}</h2>
-            </div>
             
-            {{#ifCond checked}}
-            <div class="col-sm-1 circle-icon"    style="color:red"><i class="fa fa-exclamation" style="size:16px"></i></div>
-                {{else}}
-            <div class="col-sm-1 circle-icon"    style="color:green"><i class="fa fa-check" style="size:16px"></i></div>
-                {{/ifCond}}
-            </div>
+            <h5 id="title" class="card-title">{{title}}</h5>
+            <h7 class="card-subtitle mb-2 text-muted" id="lastdate"></h7>
+            
         </div>
         <div class="card-body">
-            <div class="row" style="height:100%;">
-                <div class="col-sm-4 my-auto">
-                    <p class="card-text" id="last_input">{{last_input}}</p>
+            
+            <div class="row" id="body-content" style="height:100%;">
+                <div class="col-sm-4 my-auto variation" id="variation">
+                    <span class="card-text" id="lastvariation"></span>
+                    <i id="lastcaret"></i>
                     
-                    {{#ifCond tax}}
-                    <p class="card-text"     style="color:red"><i class="fa fa-caret-down"></i> {{tax}}%</p>
-                    {{else}}
-                    <p class="card-text"     style="color:lightsteelblue"><i class="fa fa-caret-up"></i> {{tax}}%</p>
-                    {{/ifCond}} 
                 </div>
-                <div style="background-color:red" class="col-sm-8">
-                    área do gráfico
+                <div class="col-sm-8 graph">
+                    
                 </div>
             </div>
         </div>
-        <div class="card-footer align-middle">
-            <div class="row">
-                <div class="col-sm-10 my-auto">
-                    <p class="card-text">{{text}}</p>
-                </div>
-                <div class="col-sm-1">
-                    <a class="goto" href="#{{id}}">
-                            <div class="circle-icon"><i class="fa fa-plus-circle"></i></div>
-                    </a>
-                </div>
-            </div>
+        <div class="card-footer">
+            
+            <button type="button" class="btn btn-light">
+                EDITAR
+            </button>
+            
+            <i id="verified" class="align-middle" style="font-size:26px;"></i>
+                
+            
+                
+            
         </div>

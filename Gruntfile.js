@@ -34,4 +34,5 @@ module.exports = function(grunt){
 
     grunt.registerTask('compile-templates',['handlebars']);
     grunt.registerTask('minify',['uglify:cardwidget']);
+    grunt.registerTask('default',['uglify:cardwidget','handlebars']);
 };

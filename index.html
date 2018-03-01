@@ -26,11 +26,11 @@
     .card-header{
         background-color: white;
         border-bottom:none;
-        border-top:lightsteelblue 0.2em solid;
+        /*border-top:lightsteelblue 0.2em solid;*/
     }
 
     .statusbar-inactive{
-        border-top:red;
+        border-top:red 0.2em solid;
     }
 
     .card-footer{
@@ -38,9 +38,16 @@
         border-top:none;
         text-anchor: middle;
         padding:0em 1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
+    .card{
+        min-height: 205px;
+    }
     .card-body{
+        
         height:6em;
         padding:0em 1.25em;
     }
@@ -52,10 +59,18 @@
         height:100%;
     }
 
+    .variation{
+        font-size:large;
+        text-align: center;
+    }
+
     .shadow {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);}
     
+    .card-columns{
+        padding:2em;
+    }
     </style>
 
     <title>Hello, world!</title>
@@ -125,50 +140,7 @@
                   </div>
                 </div>
         </script>
-<script id="card-template" type="text/x-handlebars-template">
-    <div class="card shadow">
-        <div class="card-header">
-            <div class="row"><div class="col-sm-10">
-            <h2>{{title}}</h2>
-            </div>
-            
-            {{#ifCond checked}}
-            <div class="col-sm-1 circle-icon"    style="color:red"><i class="fa fa-exclamation" style="size:16px"></i></div>
-                {{else}}
-            <div class="col-sm-1 circle-icon"    style="color:green"><i class="fa fa-check" style="size:16px"></i></div>
-                {{/ifCond}}
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row" style="height:100%;">
-                <div class="col-sm-4 my-auto">
-                    <p class="card-text">{{last_input}}</p>
-                    
-                    {{#ifCond tax}}
-                    <p class="card-text"     style="color:red"><i class="fa fa-caret-down"></i> {{tax}}%</p>
-                    {{else}}
-                    <p class="card-text"     style="color:blue"><i class="fa fa-caret-up"></i> {{tax}}%</p>
-                    {{/ifCond}} 
-                </div>
-                <div style="background-color:red" class="col-sm-8">
-                    área do gráfico
-                </div>
-            </div>
-        </div>
-        <div class="card-footer align-middle">
-            <div class="row">
-                <div class="col-sm-10 my-auto">
-                    <p class="card-text">{{text}}</p>
-                </div>
-                <div class="col-sm-1">
-                    <a class="goto" href="{{link}}">
-                            <div class="circle-icon"><i class="fa fa-plus-circle"></i></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
+
         
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -180,7 +152,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script></>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
         <script src="index.min.js"></script>
         <script src="templates/cards-tmpl.js"></script>
         <script>
@@ -191,54 +164,9 @@ Handlebars.registerHelper('ifCond', function(v1, options) {
   }
   return options.inverse(this);
 });
-            (function($){
    
                
-                var source   = document.getElementById("card-template").innerHTML;
-var template = Handlebars.compile(source);
-
-
-                /*$.widget("nmk.card",{
-                    _create:function(dados){
-                        console.log(this);
-                        this.element.append(dashcard["hb/cards.hbs"](context.mortes));
-                    }
-                });*/
-                 
-                $.fn.carddeck = function(data, opt){
-                    //console.log($(this));
-                    var _children = $(this).children(".card");
-                    return _children.each(function(el){
-                      var card = $(_children[el]).card();
-                      //card.card("option","nome",'yves');
-                    });
-                };
                 
-                    /*var self = $(this);
-                    var x = $(this).children('.card');
-                    var id = "nascimentos";
-                    x.map(function(el){
-                        $(x[el]).append(dashcard["hb/cards.hbs"](context.mortes));
-                        id = $(x[el]).attr('id');
-                    });
-                    
-                    
-                    setTimeout(function(){
-                        //if(id === "nascimentos")
-                        console.log("timeout");
-                        $('#mortes > #last_input').append("Yves");
-                    },3000);
-                    
-                    this.check = function(t){
-                        this.toggleClass('green');
-                    }*/
-                    
-               
-                
-                
-
-                
-            }(jQuery));
           
             //$("#linetwo").carddeck();
             var context = [
@@ -247,7 +175,7 @@ var template = Handlebars.compile(source);
                             last_input:"Julho 20",
                             text:"lalala",
                             link:"#http",
-                            tax:5,
+                            tax:55.29,
                             checked:0
                 },
                 {id:'mortes',
@@ -255,7 +183,7 @@ var template = Handlebars.compile(source);
                             last_input:"Julho 20",
                             text:"lalala",
                             link:"#http",
-                            tax:5,
+                            tax:100,
                             checked:0
                 }
                 ,
@@ -274,13 +202,66 @@ var template = Handlebars.compile(source);
                             last_input:"Julho 20",
                             text:"lalala",
                             link:"#http",
-                            tax:-2,
+                            tax:0,
                             checked:-1
                         }];
 
-            $('.card').card();
+            $('.card').lapcard();
 
-            context.map(function(a){$("#"+a.id).card({title:a.title});});
+            context.map(function(a){$("#"+a.id).lapcard({title:a.title, variation:a.tax});});
+
+            var height =60, width=150;
+           var svg = d3.selectAll('.graph').append('svg').attr('height',height).attr('width',width);
+            //svg.append('rect').attr("width", "100%")
+    //.attr("height", "100%")
+    //.attr("fill", "white");
+           /**/
+           var data = [4, 8 ,24,65, 15, 6, 23, 42,36,61,44,45];
+           var bandas = ['A', 'B' ,'C','D', 'E', 'F', 'G', 'H','I','J','K','L'];
+
+var barHeight = 10;
+
+/*var x = d3.scaleLinear()
+    .domain([0, d3.max(data)])
+    .range([0, width]);*/
+
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+/*var chart = d3.select(".chart")
+    .attr("width", width)
+    .attr("height", barHeight * data.length);*/
+    var line = d3.line()
+    .x(function(d) { return x(d); })
+    .y(function(d,i) { return y(d); })
+
+    x.domain(data.map(function(d){return d;}));
+    y.domain([0, d3.max(data)]);
+    var g = svg.append("g");
+    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    g.append("path")
+    .datum(data)
+    .attr("class", "line")
+    .attr("d", line)
+    .style('fill', 'none')
+    .style('stroke', 'lightsteelblue')
+    .style('stroke-width','2px');
+
+    g.append("g")
+      .call(d3.axisLeft(y))
+    .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("Price ($)");
+    
+      g.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+    //.select(".domain")
+     // .remove();
         </script>
       </body>
 </html>
