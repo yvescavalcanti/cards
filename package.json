@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/yvescavalcanti/cards/issues"
   },
-  "homepage": "https://github.com/yvescavalcanti/cards#readme"
+  "homepage": "https://github.com/yvescavalcanti/cards#readme",
+  "devDependencies": {
+    "grunt": "^1.0.2",
+    "grunt-browserify": "^5.2.0",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-uglify": "^3.3.0",
+    "jquery": "^3.3.1",
+    "requirejs": "^2.3.5"
+  }
 }

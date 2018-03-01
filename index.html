@@ -1,0 +1,286 @@
+<!doctype html5>
+<html lang=pt-br>
+    <head>
+        <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <style>
+        .btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}   
+    .green{
+        color:green
+    }
+
+
+    .card-header{
+        background-color: white;
+        border-bottom:none;
+        border-top:lightsteelblue 0.2em solid;
+    }
+
+    .statusbar-inactive{
+        border-top:red;
+    }
+
+    .card-footer{
+        background-color: white;
+        border-top:none;
+        text-anchor: middle;
+        padding:0em 1em;
+    }
+
+    .card-body{
+        height:6em;
+        padding:0em 1.25em;
+    }
+    .circle-icon{
+        font-size:2.5em;
+    }
+
+    .svgheight{
+        height:100%;
+    }
+
+    .shadow {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);}
+    
+    </style>
+
+    <title>Hello, world!</title>
+    </head>
+    <body>
+    <div class="container-fluid">
+        <!-- Nav tabs -->
+<!-- -Abas para menu Pecuária
+     - Cada aba recebe um número definido de cards -->
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#dist" role="tab">Distribuição</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#efpecu" role="tab">Efetivo Pecuario</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#movimento" role="tab">Movimentação</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#reproducao" role="tab">Reprodução</a>
+        </li>
+      </ul>
+      
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="dist" role="tabpanel">
+            <!-- tags cards devem conter a classe card e um id único-->
+            <div class="card-columns">
+                <div class="card shadow" id="nascimentos"></div>
+                <div class="card shadow" id="desmame"></div>
+                <div class="card shadow" id="mortes"></div>
+                <div class="card shadow" id="confinamento"></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="efpecu" role="tabpanel">
+            <!-- tags cards devem conter a classe card e um id único-->
+            <div class="card-columns">
+                <div class="card shadow" id="estoque-geral"></div>
+                <div class="card shadow" id="ano1EstoqueLabelName"></div>
+                <div class="card shadow" id="ano2EstoqueLabelName"></div>
+                <div class="card shadow" id="area-geral"></div>
+                <div class="card shadow" id="ano1AreaLabelName"></div>
+                <div class="card shadow" id="ano2AreaLabelName"></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="movimento" role="tabpanel">
+            <div class="card-columns">
+                <div class="card shadow" id="entrada"></div>
+                <div class="card shadow" id="saida"></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="reproducao" role="tabpanel">
+            <div class="card-columns">
+                <div class="card shadow" id="monta-toque"></div>
+                <div class="card shadow" id="nascimentos-desmame"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+        
+        <script id="entry-template" type="text/x-handlebars-template">
+                <div class="entry">
+                  <h1>{{title}}</h1>
+                  <div class="body">
+                    {{body}}
+                  </div>
+                </div>
+        </script>
+<script id="card-template" type="text/x-handlebars-template">
+    <div class="card shadow">
+        <div class="card-header">
+            <div class="row"><div class="col-sm-10">
+            <h2>{{title}}</h2>
+            </div>
+            
+            {{#ifCond checked}}
+            <div class="col-sm-1 circle-icon"    style="color:red"><i class="fa fa-exclamation" style="size:16px"></i></div>
+                {{else}}
+            <div class="col-sm-1 circle-icon"    style="color:green"><i class="fa fa-check" style="size:16px"></i></div>
+                {{/ifCond}}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row" style="height:100%;">
+                <div class="col-sm-4 my-auto">
+                    <p class="card-text">{{last_input}}</p>
+                    
+                    {{#ifCond tax}}
+                    <p class="card-text"     style="color:red"><i class="fa fa-caret-down"></i> {{tax}}%</p>
+                    {{else}}
+                    <p class="card-text"     style="color:blue"><i class="fa fa-caret-up"></i> {{tax}}%</p>
+                    {{/ifCond}} 
+                </div>
+                <div style="background-color:red" class="col-sm-8">
+                    área do gráfico
+                </div>
+            </div>
+        </div>
+        <div class="card-footer align-middle">
+            <div class="row">
+                <div class="col-sm-10 my-auto">
+                    <p class="card-text">{{text}}</p>
+                </div>
+                <div class="col-sm-1">
+                    <a class="goto" href="{{link}}">
+                            <div class="circle-icon"><i class="fa fa-plus-circle"></i></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script></>
+        <script src="index.min.js"></script>
+        <script src="templates/cards-tmpl.js"></script>
+        <script>
+
+Handlebars.registerHelper('ifCond', function(v1, options) {
+  if(v1 < 0) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+            (function($){
+   
+               
+                var source   = document.getElementById("card-template").innerHTML;
+var template = Handlebars.compile(source);
+
+
+                /*$.widget("nmk.card",{
+                    _create:function(dados){
+                        console.log(this);
+                        this.element.append(dashcard["hb/cards.hbs"](context.mortes));
+                    }
+                });*/
+                 
+                $.fn.carddeck = function(data, opt){
+                    //console.log($(this));
+                    var _children = $(this).children(".card");
+                    return _children.each(function(el){
+                      var card = $(_children[el]).card();
+                      //card.card("option","nome",'yves');
+                    });
+                };
+                
+                    /*var self = $(this);
+                    var x = $(this).children('.card');
+                    var id = "nascimentos";
+                    x.map(function(el){
+                        $(x[el]).append(dashcard["hb/cards.hbs"](context.mortes));
+                        id = $(x[el]).attr('id');
+                    });
+                    
+                    
+                    setTimeout(function(){
+                        //if(id === "nascimentos")
+                        console.log("timeout");
+                        $('#mortes > #last_input').append("Yves");
+                    },3000);
+                    
+                    this.check = function(t){
+                        this.toggleClass('green');
+                    }*/
+                    
+               
+                
+                
+
+                
+            }(jQuery));
+          
+            //$("#linetwo").carddeck();
+            var context = [
+                {id:'nascimentos',
+                            title:"Nascimentos",
+                            last_input:"Julho 20",
+                            text:"lalala",
+                            link:"#http",
+                            tax:5,
+                            checked:0
+                },
+                {id:'mortes',
+                            title:"Mortes",
+                            last_input:"Julho 20",
+                            text:"lalala",
+                            link:"#http",
+                            tax:5,
+                            checked:0
+                }
+                ,
+                {
+                            id:'desmame',
+                            title:"Desmame",
+                            last_input:"Julho 20",
+                            text:"lalala",
+                            link:"#http",
+                            tax:-2,
+                            checked:-1
+                        },
+                        {
+                            id:'confinamento',
+                            title:"Confinamento",
+                            last_input:"Julho 20",
+                            text:"lalala",
+                            link:"#http",
+                            tax:-2,
+                            checked:-1
+                        }];
+
+            $('.card').card();
+
+            context.map(function(a){$("#"+a.id).card({title:a.title});});
+        </script>
+      </body>
+</html>
