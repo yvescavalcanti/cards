@@ -45,6 +45,7 @@
 
     .card{
         min-height: 205px;
+        max-height: 500px;
     }
     .card-body{
         
@@ -100,10 +101,10 @@
         <div class="tab-pane active" id="dist" role="tabpanel">
             <!-- tags cards devem conter a classe card e um id único-->
             <div class="card-columns">
-                <div class="card shadow" id="nascimentos"></div>
-                <div class="card shadow" id="desmame"></div>
-                <div class="card shadow" id="mortes"></div>
-                <div class="card shadow" id="confinamento"></div>
+                <div class="card shadow" id="nascimentos" data-link="/pecuaria/nascimentos"></div>
+                <div class="card shadow" id="desmame" data-link="/pecuaria/desmame"></div>
+                <div class="card shadow" id="mortes" data-link="/pecuaria/mortes"></div>
+                <div class="card shadow" id="confinamento" data-link="/pecuaria/confinamento"></div>
             </div>
         </div>
         <div class="tab-pane" id="efpecu" role="tabpanel">
@@ -174,6 +175,7 @@ Handlebars.registerHelper('ifCond', function(v1, options) {
                             title:"Nascimentos",
                             last_input:"Julho 20",
                             text:"lalala",
+                            statusBar:0,
                             link:"#http",
                             tax:55.29,
                             checked:0
@@ -181,6 +183,7 @@ Handlebars.registerHelper('ifCond', function(v1, options) {
                 {id:'mortes',
                             title:"Mortes",
                             last_input:"Julho 20",
+                            statusBar:1,
                             text:"lalala",
                             link:"#http",
                             tax:100,
@@ -191,6 +194,7 @@ Handlebars.registerHelper('ifCond', function(v1, options) {
                             id:'desmame',
                             title:"Desmame",
                             last_input:"Julho 20",
+                            statusBar:2,
                             text:"lalala",
                             link:"#http",
                             tax:-2,
@@ -200,15 +204,17 @@ Handlebars.registerHelper('ifCond', function(v1, options) {
                             id:'confinamento',
                             title:"Confinamento",
                             last_input:"Julho 20",
+                            statusBar:3,
                             text:"lalala",
                             link:"#http",
                             tax:0,
                             checked:-1
                         }];
-
+            
             $('.card').lapcard();
 
-            context.map(function(a){$("#"+a.id).lapcard({title:a.title, variation:a.tax});});
+            context.map(function(a){$("#"+a.id).lapcard({title:a.title, variation:a.tax,statusBar:a.statusBar});});
+            
 
             var height =60, width=150;
            var svg = d3.selectAll('.graph').append('svg').attr('height',height).attr('width',width);
