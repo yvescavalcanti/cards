@@ -22,6 +22,10 @@
         color:green
     }
 
+    .card{
+        border-top-left-radius:0px;
+        border-top-right-radius:0px;
+    }
 
     .card-header{
         background-color: white;
@@ -29,9 +33,7 @@
         /*border-top:lightsteelblue 0.2em solid;*/
     }
 
-    .statusbar-inactive{
-        border-top:red 0.2em solid;
-    }
+   
 
     .card-footer{
         background-color: white;
@@ -43,10 +45,7 @@
         align-items: center;
     }
 
-    .card{
-        min-height: 205px;
-        max-height: 500px;
-    }
+    
     .card-body{
         
         height:6em;
@@ -72,11 +71,46 @@
     .card-columns{
         padding:2em;
     }
+    #loading rect{
+        fill: green;
+    }
     </style>
 
     <title>Hello, world!</title>
     </head>
     <body>
+        <!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
+    <script id="loading-icon" type="text/template">
+        <div class="col-sm-12 text-center">
+<svg id="loading" width="55" height="80" viewBox="0 0 35 40" xmlns="http://www.w3.org/2000/svg" fill="#FFF">
+    <g transform="matrix(1 0 0 -1 0 80)">
+        <rect width="5" height="20" rx="3" >
+            <animate attributeName="height"
+                 begin="0s" dur="4.3s"
+                 values="20;45;57;80;64;32;66;45;64;23;66;13;64;56;34;34;2;23;76;79;20" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+        <rect x="10" width="5" height="80" rx="3">
+            <animate attributeName="height"
+                 begin="0s" dur="5s"
+                 values="80;55;33;5;75;23;73;33;12;14;60;80" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+        <rect x="20" width="5" height="50" rx="3">
+            <animate attributeName="height"
+                 begin="0s" dur="2.4s"
+                 values="50;34;78;23;56;23;34;76;80;54;21;50" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+        <rect x="30" width="5" height="30" rx="3">
+            <animate attributeName="height"
+                 begin="0s" dur="6s"
+                 values="30;45;13;80;56;72;45;76;34;23;67;30" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+    </g>
+</svg></div>
+</script>
     <div class="container-fluid">
         <!-- Nav tabs -->
 <!-- -Abas para menu Pecuária
@@ -101,10 +135,10 @@
         <div class="tab-pane active" id="dist" role="tabpanel">
             <!-- tags cards devem conter a classe card e um id único-->
             <div class="card-columns">
-                <div class="card shadow" id="nascimentos" data-link="/pecuaria/nascimentos"></div>
-                <div class="card shadow" id="desmame" data-link="/pecuaria/desmame"></div>
-                <div class="card shadow" id="mortes" data-link="/pecuaria/mortes"></div>
-                <div class="card shadow" id="confinamento" data-link="/pecuaria/confinamento"></div>
+                <div class="card shadow" title="Nascimentos" id="nascimentos" data-link="/pecuaria/nascimentos"></div>
+                <div class="card shadow" title="Desmame" id="desmame" data-link="/pecuaria/desmame"></div>
+                <div class="card shadow" title="Mortes" id="mortes" data-link="/pecuaria/mortes"></div>
+                <div class="card shadow" title="Confinamento" id="confinamento" data-link="/pecuaria/confinamento"></div>
             </div>
         </div>
         <div class="tab-pane" id="efpecu" role="tabpanel">
@@ -133,16 +167,7 @@
       </div>
     </div>
         
-        <script id="entry-template" type="text/x-handlebars-template">
-                <div class="entry">
-                  <h1>{{title}}</h1>
-                  <div class="body">
-                    {{body}}
-                  </div>
-                </div>
-        </script>
-
-        
+                
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -172,100 +197,56 @@ Handlebars.registerHelper('ifCond', function(v1, options) {
             //$("#linetwo").carddeck();
             var context = [
                 {id:'nascimentos',
-                            title:"Nascimentos",
+                            dados:{
                             last_input:"Julho 20",
-                            text:"lalala",
-                            statusBar:0,
-                            link:"#http",
-                            tax:55.29,
-                            checked:0
+                            status:0,
+                            variation:55.29,
+                            verified:true}
                 },
                 {id:'mortes',
-                            title:"Mortes",
-                            last_input:"Julho 20",
-                            statusBar:1,
-                            text:"lalala",
-                            link:"#http",
-                            tax:100,
-                            checked:0
-                }
+                dados:{
+                last_input:"Julho 20",
+                status:2,
+                variation:155.29,
+                verified:false}
+    }
                 ,
-                {
-                            id:'desmame',
-                            title:"Desmame",
-                            last_input:"Julho 20",
-                            statusBar:2,
-                            text:"lalala",
-                            link:"#http",
-                            tax:-2,
-                            checked:-1
-                        },
-                        {
-                            id:'confinamento',
-                            title:"Confinamento",
-                            last_input:"Julho 20",
-                            statusBar:3,
-                            text:"lalala",
-                            link:"#http",
-                            tax:0,
-                            checked:-1
-                        }];
+                {id:'desmame',
+                dados:{
+                last_input:"Julho 20",
+                status:3,
+                variation:0,
+                verified:false}
+    },
+    {id:'confinamento',
+    dados:{
+    last_input:"Julho 20",
+    status:1,
+    variation:-25,
+    verified:false}
+}];
+           function setCaret(v){
+               if(v<0) return 1;
+               else return -1;
+           }
+
+           function setStatus(v){
+               return v;
+           }
+
+           $('.card').lapicard();
+           $('#mortes').lapicard({'setCaret':setCaret,'setStatus':setStatus});
+
+           setTimeout(function(){
+               context.map(function(el){
+                   console.log(el);
+                   $("#"+el.id).lapicard("loadContent",el.dados);
+                   
+               });
+           },5000);
             
-            $('.card').lapcard();
 
-            context.map(function(a){$("#"+a.id).lapcard({title:a.title, variation:a.tax,statusBar:a.statusBar});});
-            
-
-            var height =60, width=150;
-           var svg = d3.selectAll('.graph').append('svg').attr('height',height).attr('width',width);
-            //svg.append('rect').attr("width", "100%")
-    //.attr("height", "100%")
-    //.attr("fill", "white");
-           /**/
-           var data = [4, 8 ,24,65, 15, 6, 23, 42,36,61,44,45];
-           var bandas = ['A', 'B' ,'C','D', 'E', 'F', 'G', 'H','I','J','K','L'];
-
-var barHeight = 10;
-
-/*var x = d3.scaleLinear()
-    .domain([0, d3.max(data)])
-    .range([0, width]);*/
-
-    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-    y = d3.scaleLinear().rangeRound([height, 0]);
-/*var chart = d3.select(".chart")
-    .attr("width", width)
-    .attr("height", barHeight * data.length);*/
-    var line = d3.line()
-    .x(function(d) { return x(d); })
-    .y(function(d,i) { return y(d); })
-
-    x.domain(data.map(function(d){return d;}));
-    y.domain([0, d3.max(data)]);
-    var g = svg.append("g");
-    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-    g.append("path")
-    .datum(data)
-    .attr("class", "line")
-    .attr("d", line)
-    .style('fill', 'none')
-    .style('stroke', 'lightsteelblue')
-    .style('stroke-width','2px');
-
-    g.append("g")
-      .call(d3.axisLeft(y))
-    .append("text")
-      .attr("fill", "#000")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("Price ($)");
-    
-      g.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+           
     //.select(".domain")
      // .remove();
         </script>

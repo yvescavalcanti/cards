@@ -37,12 +37,18 @@
   * @exports $ as jQuery
   */
 (function($){
-
+    var cardBody = '&lt;div class="col-sm-4 my-auto variation" id="variation">';
+        cardBody +='&lt;span class="card-text" id="lastvariation">&lt;/span>';
+        cardBody +='&lt;i id="lastcaret">&lt;/i>&lt;/div>';
+        cardBody +='&lt;div class="col-sm-8 graph">&lt;/div>';
+    
     /**
      * @name $.lapicard
      * @namespace $.lapicard
      * @description
      * &lt;p>Função de instanciação de um lapicard&lt;/p>
+     * &lt;p>Você deve primeiro instanciar um lapicard, e depois pode fornecer opções em uma
+     * segunda invocação do plugin.&lt;/p>
      * @example
      * $(selector).lapicard()
      * 
@@ -53,7 +59,7 @@
      * @name $.lapicard#options
      * @namespace $.lapicard#options
      * @property {Number} height Define a altura do card
-     * @property {function} setCaret 
+     * @property {function} setStatus 
      * Função utilizada para definir a barra de status do card. Deve retornar
      * &lt;ul>
      * &lt;li>0 -> azul&lt;/li>
@@ -62,8 +68,12 @@
      * &lt;li>3 -> amarelo&lt;/li>
      * &lt;li>4 -> verde&lt;/li>
      * &lt;/ul>
-     * @property {function} setChecked 
-     * Função utilizada para definir ícone checked, deve retornar true para cheacked or false para unchecked
+     * @property {function} setCaret 
+     * &lt;p>Função utilizada para avaliar os dados do último lançamento, e, assim definir cor e ícone (caret) relacionado à variação provocada pelo último lançamento.&lt;/p>
+     * &lt;p>Deve retornar -1 para vermelho, 1 para azul&lt;/p>
+     * &lt;p>O sentido do caret é definido segundo o sinal da variação.&lt;/p>
+     * @property {function} graphConstructor
+     * &lt;p>Propriedade que recebe a função geradora do gráfico. Esta será invocada quando do recebimento dos dados&lt;/p>
      * @description
      * Conjunto de opções de um lapicard. Você pode definir uma ou mais opções em cada invocação.
      * @example
@@ -75,36 +85,39 @@
         {
         
         options:{
+           
             title:'',
-            resposta:'resposta',
             statusBar:0,
             verified:true,
             variation:0,
-            setCaret:function(){
-                throw new Error("setCaret not implemented yet");
+            setCaret:function(v){
+                if(v === 0)
+                return 0;
+               else if(v&lt;0) return -1;
+               else return 1;
             },
             setChecked:function(){
                 throw new Error("setChecked not implemented yet");
+            },
+            setStatus:function(v){
+                return v;
             }
+            
 
         },
         _create:function(){
             var self = this;
-            this.element.append(dashcard["hb/cards.hbs"]({teste:this.teste}));
+            var title = this.element.attr('title');
+            this.element.append(dashcard["hb/cards.hbs"]({'title':title}));
+            this.body = this.element.find('#body-content');
             
-            //this.body.hide();
-            setTimeout(function(){
-                self._setVerified(false);
-                //console.log("timeout");
-                //self._setStatusBar(0);
-            },3000);
+            
             var id = this.element.attr('id');
             // store components tags
-            this.body = this.element.find('#body-content');
+                       
             this.titleTag = this.element.find("#title");
             this.verifiedTag = this.element.find("#verified");
             this.goto = this.element.find('#goto');
-            this.variation = this.element.find("#variation");
             this.lastvariation = this.element.find("#lastvariation");
             this.lastcaret = this.element.find("#lastcaret");
             
@@ -113,17 +126,36 @@
                 alert(self.element.attr('data-link'));
                 $('#content').load(window.urlBase + self.element.attr('data-link'));
             });
-                
+            //this.setWaiting();    
             
             //console.log(this._title);
         },
         teste:function(){
             return alert();
         },
+        setWaiting:function(){
+            this.body.html($('#loading-icon').text());
+        },
+        /**
+         * @param {Object} data 
+         * &lt;ul>
+         *  &lt;li>status&lt;/li>
+         *  &lt;li>variation&lt;/li>
+         *  &lt;li>verified&lt;/li>
+         * &lt;/ul>
+         * 
+         */
+        loadContent:function(data){
+            this.body.html(cardBody);
+            this._setVerified(data.verified);
+            this._setLastVariation(data.variation);
+            this._setStatusBar(this.options.setStatus(data.status));
+        },
         _title:function(title){
             this.titleTag.text(title);
         },
         _setVerified:function(verified){
+            this.verifiedTag.hide(500);
             if(verified){
                 this.verifiedTag.attr('class', 'fa fa-check');
                 this.verifiedTag.css('color','blue');
@@ -131,6 +163,7 @@
                 this.verifiedTag.attr('class', 'fa fa-exclamation');
                 this.verifiedTag.css('color','red');
             }
+            this.verifiedTag.show(500);
         },
 
 
@@ -164,38 +197,36 @@
                 
                 
             }
-            console.log('color:'+color);
+            
             this.element.css('border-top','0.2em solid '+color);
-            /*if(active)
-                this.element.css("border-top","solid 2px lightsteelblue");
-            else
-                this.element.css("border-top","solid 2px red");*/
+            
         },
         /**
          * Função que define o campo de variação
          * @param {Number} variation - Taxa de variação
          */
         _setLastVariation:function(variation){
-            if(variation &lt; 0){
+            this.variation = this.element.find("#variation");
+            this.variation.hide();
+            if(this.options.setCaret(variation) === -1)
                 this.variation.css('color','red');
-                this.variation.children("#lastcaret").attr('class','fa fa-caret-down');
-                
-            }else{
+            else
                 this.variation.css('color','blue');
-                if(variation > 0)
-                    this.variation.children("#lastcaret").attr('class','fa fa-caret-up');
-                else
-                    this.variation.children("#lastcaret").attr('class','fa fa-square');
-            }
+            if(variation &lt; 0)
+                this.variation.children("#lastcaret").attr('class','fa fa-caret-down');
+            else if(variation === 0)
+                this.variation.children("#lastcaret").attr('class','fa fa-square');
+            else
+                this.variation.children("#lastcaret").attr('class','fa fa-caret-up');
+            
             this.variation.children("#lastvariation").text(variation+"%");
+            this.variation.fadeIn(500);
+            
         },
         _setOptions:function(options){
            this._super(options);
-           this._title(options.title);
-           this._setStatusBar(options.statusBar);
-           this._setLastVariation(options.variation);
-           this._setStatusBar(options.statusBar);
-           console.log(this.options);
+           
+           
         }
 
 
@@ -205,7 +236,9 @@
     });
 
     
-}(jQuery));</code></pre>
+}(jQuery));
+
+</code></pre>
         </article>
     </section>
 
@@ -215,13 +248,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="$.lapicard.html">lapicard</a></li><li><a href="$.lapicard_options.html">options</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_setLastVariation">_setLastVariation</a></li><li><a href="global.html#_setStatusBar">_setStatusBar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="$.lapicard.html">lapicard</a></li><li><a href="$.lapicard_options.html">options</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_setLastVariation">_setLastVariation</a></li><li><a href="global.html#_setStatusBar">_setStatusBar</a></li><li><a href="global.html#loadContent">loadContent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 04 2018 23:14:37 GMT-0300 (-03)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Mar 05 2018 23:28:56 GMT-0300 (-03)
 </footer>
 
 <script> prettyPrint(); </script>
