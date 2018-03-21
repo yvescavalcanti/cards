@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reusable Donut Chart in D3 v4</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <script src="donutchart.js"></script>
+</head>
+<body>
+
+<div id="chart"></div>
+
+<script>
+    var dados = "Species\tProbability\tError\n\
+Halobacillus halophilus\t0.10069108308662117\t0.045296463390387814\n\
+Staphylococcus epidermidis\t0.04076903848429238\t0.0096463390387814\n\
+Chromobacterium violaceum\t0.10318269548054262\t0.03390387814\n\
+Pseudomonas TKP\t0.05880239155316942\t0.0045296463390387745\n\
+Bacillus subtilis\t0.1908578484310064\t0.0765387676\n\
+Pseudomonas fluorescens\t0.10663641563053275\t0.0045296463390387676\n";
+    var data = d3.tsvParse(dados);
+    var donut = DonutChart()
+        .width(960)
+        .height(500)
+        .cornerRadius(3) // sets how rounded the corners are on each slice
+        .padAngle(0.015) // effectively dictates the gap between slices
+        .variable('Probability')
+        .category('Species')
+        .data(data);
+
+    
+    //console.log(data);
+    /*d3.tsv('species.tsv', function(error, data) {
+        if (error) throw error;*/
+        d3.select('#chart')
+            //.datum(data) // bind data to the div
+            .call(donut); // draw chart in div
+    /*});*/
+
+</script>
+
+</body>
+</html>

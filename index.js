@@ -73,12 +73,14 @@
             },
             setStatus:function(v){
                 return v;
-            }
+            },
+            graph:null
             
 
         },
         _create:function(){
             var self = this;
+            
             var title = this.element.attr('title');
             this.element.append(dashcard["hb/cards.hbs"]({'title':title}));
             this.body = this.element.find('#body-content');
@@ -102,9 +104,6 @@
             
             //console.log(this._title);
         },
-        teste:function(){
-            return alert();
-        },
         setWaiting:function(){
             this.body.html($('#loading-icon').text());
         },
@@ -118,7 +117,8 @@
          * 
          */
         loadContent:function(data){
-            this.body.html(cardBody);
+            
+            
             this._setVerified(data.verified);
             this._setLastVariation(data.variation);
             this._setStatusBar(this.options.setStatus(data.status));
@@ -147,7 +147,7 @@
         
         
         _setStatusBar:function(stage){
-            console.log("stage:"+stage);
+            
             var color;
             switch (stage){
                 case 0:

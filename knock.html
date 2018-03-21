@@ -22,6 +22,9 @@
         color:green
     }
 
+    svg{
+        border:1px dotted cyan;
+    }
     .card{
         border-top-left-radius:0px;
         border-top-right-radius:0px;
@@ -92,13 +95,20 @@
   @media (max-width: 576px){
     .card-footer{
         padding:2em 1em 0.5em 1em;
-  }
+  }}
     #loading rect{
         fill: green;
+    }
+    .line{
+        fill:none;
+        stroke:lightblue;
+        stroke-width: 0.2em;
     }
     </style>
 
     <title>Hello, world!</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     </head>
     <body>
     
@@ -126,10 +136,10 @@
         <div class="tab-pane active" id="dist" role="tabpanel">
             <!-- tags cards devem conter a classe card e um id único-->
             <div class="card-columns" id="distribuicao">
-                <div class="card shadow" action="teste" title="Nascimentos" id="nascimentos" data-link="/pecuaria/nascimentos"></div>
-                <div class="card shadow" title="Desmame" id="desmame" data-link="/pecuaria/desmame"></div>
-                <div class="card shadow" title="Mortes" id="mortes" data-link="/pecuaria/mortes"></div>
-                <div class="card shadow" title="Confinamento" id="confinamento" data-link="/pecuaria/confinamento"></div>
+                <card-widget id="nascimentos" params="card:$data"></card-widget>
+                <card-widget id="desmame" params="card:$data"></card-widget>
+                <card-widget id="mortes" params="card:$data"></card-widget>
+                <card-widget id="abates" params="card:$data"></card-widget>
             </div>
         </div>
         <div class="tab-pane" id="efpecu" role="tabpanel">
@@ -170,80 +180,22 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-        <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
-        <script src="index.js"></script>
-        <script src="templates/cards-tmpl.js"></script>
+        
+        
+        
         <script src="https://d3js.org/d3.v4.min.js"></script>
         
         <script src="https://use.fontawesome.com/61e8c1d51d.js"></script>
-        <script src="foo5.js"></script>
+        
         <script src="barchart.js"></script>
+        <script src="linechart.js"></script>
         <script src="stackedbars.js"></script>
+        <script src="donutchart.js"></script>
         
         <script>
-
-Handlebars.registerHelper('ifCond', function(v1, options) {
-  if(v1 < 0) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
-   
-
-/*function cardUpdate(dados){
-    dados.map(function(el){
-        this.cards[el.id].lapicard("loadContent",el.dados);
-    });               
-}*/
-/**
- * @param {String} id
- * @param {String} requestUrl
-*/
-function lapiDash(id, requestUrl){
-    var self = this;
-    this.id = id;
-    this.requestUrl = requestUrl;
-    this.cards = [];
-    /**
-     * Retrieve cards of the dashboard
-    */
-    $("#"+id).find('.card').each(function(){
-        var el = $(this).lapicard();
-        self.cards[el.attr('id')] = el;
-    });
-
-    // functions
-    this.addCard = function(id, obj){
-        self.cards[id] = obj;
-    }
-    this.update = function(dados){
-        dados.map(function(el){
-            //console.log(el);
-            //self.cards[el.id].lapicard("loadContent",el.dados);
-        });
-        
-    }
-};         
-
-
-var distribuicao = new lapiDash("distribuicao");
-$("#nascimentos").lapicard({
-    setCaret:function(v){
-        if(v>0) return -1
-        else return 0;
-    }
-});
-
-
-distribuicao.addCard("nascimentos", nascimentos);
-setTimeout(function(){
-    distribuicao.update([
-        {id:'nascimentos',dados:{verified:true}},
-        {id:'mortes',dados:{verified:false}}
-        ]);
-},2000);
 var testData = [
-        {id:1,value:0},
+        {id:0,value:450},
+        {id:1,value:450},
         {id:2,value:100},
         {id:3,value:400},
         {id:4,value:150},
@@ -258,33 +210,125 @@ var testData = [
   {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
   {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
 ];
+ko.bindingHandlers.lineChart = {
+        
+    init: function(element,valueAccessor) {
+        "use strict";
+        var self = this;
+        var values = ko.unwrap(valueAccessor());
+        //values.metodo
+        window.addEventListener("resize", function(){d3.select(element).call(values.metodo);});
+
+    },
+    update: function(element, valueAccessor,allBindings) {
+        "use strict";
+        //var dados = (valueAccessor())();
+        //console.log(dados);
+        //var b = new BarChart().dados(dados).xScale(d3.scaleBand())
+        //.yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
+        //.yFunction(function(d){return d.value;});
+        var metodo = ko.unwrap(valueAccessor()).metodo;
+        var dados = ko.unwrap(valueAccessor()).data;
+        //console.log(metodo);
+        d3.select(element).call(metodo.dados(dados()));
+        
+    }
+};
+    ko.components.register('linechart',{
+        viewModel: function(w,h){
+            this.width = w;
+            this.height = h;
+        },
+        template:'<svg data-bind="{attr:{width:width,height" '
+    });
+    ko.components.register('card-widget', {
+            viewModel: function(params){
+                this.title = params.card.title;
+                this.goto = params.card.goto;
+                this.dados = params.card.dados;
+                this.plot = params.card.plot;
+                //console.log(this.plot);
+            },
+            template:
+                '<div class="card shadow">\
+                        <div class="card-header">\
+                            <h5 id="title" data-bind="text:title" class="card-title"></h5>\
+                            <h7 class="card-subtitle mb-2 text-muted" id="lastdate" ></h7>\
+                        </div>\
+                        <div class="card-body">\
+                            <div class="row" id="body-content" style="height:100%;">\
+                            <div class="col-sm-6 my-auto variation" id="variation">\
+                            <span class="card-text" id="lastvariation"></span>\
+                            <i id="lastcaret"></i></div>\
+                            <div id="grafico" class="col-sm-6 graph" data-bind="lineChart:{data:dados,metodo:plot}"></div>\
+                            </div>\
+                        </div>\
+                        <div class="card-footer">\
+                            <button type="button" id="goto" data-bind="attr:{href:goto}" "class="btn btn-light">\
+                                EDITAR\
+                            </button>\
+                            <i id="verified" class="align-middle" style="font-size:26px;"></i>\
+                        </div>\
+                    </div>'
+        });
 
 
-    $("#nascimentos").lapicard('loadContent',testData);
-/*var bChart = new BarChart({
-    element:".graph",
-    xScale:d3.scaleBand(),
-    yScale:d3.scaleLinear(),
-    data:testData
-});
-*/
-var b = BarChart().dados(testData).xFunction(function(d){return d.id})
-    .yFunction(function(d){return d.value}).xScale(d3.scaleBand())
-    .yScale(d3.scaleLinear());
-var gg = d3.select("#nascimentos #grafico").call(b);
+        var lineChartData = [ {date: new Date(), close: 100},
+        {date: new Date("2018-03-23"), close: 110}];
+
+        function CardModel(titulo, dados, gt, pl){
+            this.title = titulo;
+            this.dados = ko.observableArray(dados);
+            this.goto = gt;
+            this.plot = pl;
+        }
+        
+        var dist  = function(c){
+            var self = this;
+            self.cards = c;
+        }
+
+        var nasBar = BarChart().xScale(d3.scaleBand())
+        .yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
+        .yFunction(function(d){return d.value;});
+        var dist  = new CardModel("Nascimentos",testData,"urlteste", nasBar);
+
+        ko.applyBindings(dist, document.getElementById("nascimentos"));
+
+        var desChart = LineChart().xScale(d3.scaleBand())
+        .yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
+        .yFunction(function(d){return d.value;});
+        var dist2  = new CardModel("Desmame",testData,"urlteste", desChart);
+
+        ko.applyBindings(dist2, document.getElementById("desmame"));
+
+        var morteChart = StackedBarChart().xScale(d3.scaleBand())
+        .yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
+        .yFunction(function(d){return d.value;}).keys(['apples','bananas','cherries','dates']);
+        var dist3  = new CardModel("mortes",testData2,"urlteste", morteChart);
+
+        ko.applyBindings(dist3, document.getElementById("mortes"));
 
 
-var stbar = StackedBarChart().dados(testData2).keys(["apples", "bananas", "cherries", "dates"])
-    .xScale(d3.scaleBand())
-    .yScale(d3.scaleLinear());
-d3.select("#desmame #grafico").call(stbar);
-d3.select("#mortes #grafico").call(stbar);
-
-d3.select(window).on('resize',function(){
-    d3.select("#nascimentos #grafico").call(b);
-    d3.select("#desmame #grafico").call(stbar);
-    d3.select("#mortes #grafico").call(stbar);
-});
+        var dadosD = "Species\tProbability\tError\n\
+Halobacillus halophilus\t0.10069108308662117\t0.045296463390387814\n\
+Staphylococcus epidermidis\t0.04076903848429238\t0.0096463390387814\n\
+Chromobacterium violaceum\t0.10318269548054262\t0.03390387814\n\
+Pseudomonas TKP\t0.05880239155316942\t0.0045296463390387745\n\
+Bacillus subtilis\t0.1908578484310064\t0.0765387676\n\
+Pseudomonas fluorescens\t0.10663641563053275\t0.0045296463390387676\n";
+    var dataD = d3.tsvParse(dadosD);
+        var abateChart = DonutChart()
+        //.width(960)
+        //.height(500)
+        .cornerRadius(3) // sets how rounded the corners are on each slice
+        .padAngle(0.015) // effectively dictates the gap between slices
+        .variable('Probability')
+        .category('Species');
+        
+        var dist4 = new CardModel("abates",dataD,"urlteste", abateChart);
+        ko.applyBindings(dist4, document.getElementById("abates"));
+        
         </script>
       </body>
 </html>
