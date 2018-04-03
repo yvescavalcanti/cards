@@ -48,8 +48,8 @@ function DonutChart() {
             // ===========================================================================================
             // append the svg object to the selection
             var svg = selection.append('svg')
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
+                .attr('width', width )//+ margin.left + margin.right)
+                .attr('height', height)// + margin.top + margin.bottom)
               .append('g')
                 .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
             // ===========================================================================================

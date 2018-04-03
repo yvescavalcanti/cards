@@ -104,9 +104,8 @@
     
     <div class="container-fluid">
         <div class="card-columns">
-        <card-widget-two id="yves" params="model:dist5"></card-widget-two>
-        	<card-widget id="teste-yves" params="model:dist4"></card-widget>
-
+          	<card-widget id="teste-yves" params="model:dist4"></card-widget>
+            <card-widget-two id="yves" params="model:dist5"></card-widget-two>
         	<card-widget id="teste" params="model:dist6"></card-widget>
         </div>
     </div>
@@ -268,9 +267,9 @@ ko.components.register('card-widget-two', {
         	        	<p class ="card-text" data-bind="text:\'R$ \'+lastvalue()"></p>\
         	        	<i data-bind="css:caret"></i>\
             </div>\
-        	<div id="grafico" class="col-sm-3 graph" data-bind="drawChart:{data:dados2,metodo:plot2}">\
+        	<div id="grafico" class="col-sm-4 graph" data-bind="drawChart:{data:dados,metodo:plot}">\
         	</div>\
-        	<div id="grafico" class="col-sm-3 graph" data-bind="drawChart:{data:dados2,metodo:plot2}">\
+        	<div id="grafico" class="col-sm-4 graph" data-bind="drawChart:{data:dados2,metodo:plot2}">\
         	</div>\
 		</div> <!-- FIM BODY CARD -->\
 		<div class="card-footer float-right">\
@@ -313,7 +312,7 @@ var dados = [{mes:"Julho", prob:2, erro:4},{mes:"Março", prob:2, erro:4},{mes:"
  
 var bChart = BarChart().xFunction(function(d){return d.mes;})
         .yFunction(function(d){return d.prob;});
-var dist5 = new DoubleChartCardModel({title:"abates",dados:dados,goto:"urlteste", plot:abateChart,dados2:dados,plot2:bChart});     
+var dist5 = new DoubleChartCardModel({title:"abates",dados:dados,goto:"urlteste", plot:bChart,dados2:dados,plot2:abChart});     
 ko.applyBindings(dist5, document.getElementById("yves"));
 
 var bt = BarChart().xFunction(function(d){return d.mes;})
