@@ -93,6 +93,9 @@
         stroke:lightblue;
         stroke-width: 0.2em;
     }
+    .circle{
+        fill:white;
+    }
     </style>
 
     <title>Hello, world!</title>
@@ -289,7 +292,7 @@ Chromobacterium violaceum\t0.10318269548054262\t0.03390387814\n\
 Pseudomonas TKP\t0.05880239155316942\t0.0045296463390387745\n\
 Bacillus subtilis\t0.1908578484310064\t0.0765387676\n\
 Pseudomonas fluorescens\t0.10663641563053275\t0.0045296463390387676\n";
-var dados = [{mes:"Julho", prob:2, erro:4},{mes:"Março", prob:2, erro:4},{mes:"Junho", prob:2, erro:4}];
+var dados = [{mes:"Julho", prob:5, erro:4, verificado:0},{mes:"Março", prob:2, erro:8, verificado:0},{mes:"Junho", prob:7, erro:4,verificado:1}];
     var dataD = d3.tsvParse(dadosD);
         var abateChart = DonutChart()
         //.width(960)
@@ -312,10 +315,10 @@ var dados = [{mes:"Julho", prob:2, erro:4},{mes:"Março", prob:2, erro:4},{mes:"
  
 var bChart = BarChart().xFunction(function(d){return d.mes;})
         .yFunction(function(d){return d.prob;});
-var dist5 = new DoubleChartCardModel({title:"abates",dados:dados,goto:"urlteste", plot:bChart,dados2:dados,plot2:abChart});     
+var dist5 = new DoubleChartCardModel({title:"abates",dados:[],goto:"urlteste", plot:bChart,dados2:[],plot2:abChart});     
 ko.applyBindings(dist5, document.getElementById("yves"));
 
-var bt = BarChart().xFunction(function(d){return d.mes;})
+var bt = LineChart().xFunction(function(d){return d.mes;})
         .yFunction(function(d){return d.prob;});
 
  var dist6 = new CardModel({title:"teste",dados:dados,goto:"urlteste", plot:bt});

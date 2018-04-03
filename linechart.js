@@ -1,89 +1,60 @@
-function loadShadow(selection){// filters go in defs element
-    selection.each(function(){
-        var svg = d3.select(this);
-        var defs = svg.append("defs");
-        
-        // create filter with id #drop-shadow
-        // height=130% so that the shadow is not clipped
-        var filter = defs.append("filter")
-            .attr("id", "drop-shadow")
-            .attr("height", "100%");
-        
-        // SourceAlpha refers to opacity of graphic that this filter will be applied to
-        // convolve that with a Gaussian with standard deviation 3 and store result
-        // in blur
-        filter.append("feGaussianBlur")
-            .attr("in", "SourceAlpha")
-            .attr("stdDeviation", 5)
-            .attr("result", "blur");
-        
-        // translate output of Gaussian blur to the right and downwards with 2px
-        // store result in offsetBlur
-        filter.append("feOffset")
-            .attr("in", "blur")
-            .attr("dx", 1)
-            .attr("dy", 0)
-            .attr("result", "offsetBlur");
-        
-        // overlay original SourceGraphic over translated blurred opacity by using
-        // feMerge filter. Order of specifying inputs is important!
-        var feMerge = filter.append("feMerge");
-        
-        feMerge.append("feMergeNode")
-            .attr("in", "offsetBlur")
-        feMerge.append("feMergeNode")
-            .attr("in", "SourceGraphic");
-    });
-
-}
-
 function LineChart(){
     var width, height;
     var margin = {top:10, right:10, bottom:20, left:10};
     var plotHeight, plotWidth;
     var svg;
     var plotArea;
-    var x,y,xf,yf,xs,ys;
+    var x,y,xf,yf,xs = d3.scaleBand(),ys=d3.scaleLinear();
     var dados;
     function chart(selection){
         selection.each(function(){
-            var el = d3.select(this);
-            el.html("");
-            var limits = el.node().getBoundingClientRect();
-            width = limits.width;
-            height = limits.height;
-            plotHeight = height - margin.top - margin.bottom;
-            plotWidth = width - margin.left - margin.right;
-            svg = el.append('svg').attr('width',width).attr('height',height);
-            //svg.call(loadShadow);
-            plotArea = svg.append('g')
-                .attr("transform", "translate("+margin.left+","+margin.top+")");
-            xs.range([0,plotWidth]).domain(dados.map(function(d){return xf(d);}));
-            //.padding(0.2);
-            ys.range([plotHeight,0]).domain([0,d3.max(dados,function(d){return yf(d)})]);
-            
-            svg.append('g')
-            .attr("transform","translate("+margin.left+","+(height-margin.bottom)+")")
-            .attr('class','bt-axis')
-            .call(d3.axisBottom(xs));
+            // se houver registros em dados desenhe
+            if(dados.length>0){
+                var el = d3.select(this);
+                el.html("");
+                var limits = el.node().getBoundingClientRect();
+                width = limits.width;
+                height = limits.height;
+                plotHeight = height - margin.top - margin.bottom;
+                plotWidth = width - margin.left - margin.right;
+                svg = el.append('svg').attr('width',width).attr('height',height);
+                //svg.call(loadShadow);
+                plotArea = svg.append('g')
+                    .attr("transform", "translate("+margin.left+","+margin.top+")");
+                xs.range([0,plotWidth]).domain(dados.map(function(d){return xf(d);}));
+                //.padding(0.2);
+                ys.range([plotHeight,0]).domain([0,d3.max(dados,function(d){return yf(d)})]);
+                
+                svg.append('g')
+                .attr("transform","translate("+margin.left+","+(height-margin.bottom)+")")
+                .attr('class','bt-axis')
+                .call(d3.axisBottom(xs));
 
-            var line = d3.line()
-            .x(function(d){return xs(xf(d));})
-            .y(function(d){return ys(yf(d))});
-            //console.log(this.plotArea);
-            plotArea.append("path")
-            .datum(dados)
-            .attr("class", "line")
-            .attr("d", line);
-            
-            plotArea.selectAll('dot').data(dados).enter().append('circle')
-                .attr('r',5)
-                .attr('cx',function(d){return xs(xf(d));})
-                .attr('cy',function(d){return ys(yf(d));});
-                //.on("mouseover", toolTip('circle',this.yFunction))
-                //.on("mouseout", function() {
-                //d3.select("#tooltip").classed("hidden", true);
-                //});*/
+                var line = d3.line()
+                .x(function(d){return xs(xf(d))+xs.bandwidth()/2;})
+                .y(function(d){return ys(yf(d))});
+                //console.log(this.plotArea);
+                plotArea.append("path")
+                .datum(dados)
+                .attr("class", "line")
+                .attr("d", line);
+                
+                plotArea.selectAll('dot').data(dados).enter().append('circle')
+                    .attr('r',5)
+                    .attr('cx',function(d){return xs(xf(d))+xs.bandwidth()/2;})
+                    .attr('cy',function(d){return ys(yf(d));})
+                    .attr('class','circle')
+                    .style("stroke", function(d){
+                        if (d.verificado === 0)
+                            return "lightsteelblue";
+                        else
+                            return "red";
+                    });
+                    //.on("mouseover", toolTip('circle',this.yFunction))
+                    //.on("mouseout", function() {
+                    //d3.select("#tooltip").classed("hidden", true);
+                    //});*/
+                } // fim do if de comprimento de dados
             });
     }
 
