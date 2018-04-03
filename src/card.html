@@ -1,6 +1,6 @@
 <div class="card shadow">
     <div class="card-header">
-        <h5 id="title" data-bind="text:title.title" class="card-title"></h5>
+        <h5 id="title" data-bind="text:title" class="card-title"></h5>
         <h7 class="card-subtitle mb-2 text-muted" id="lastdate" ></h7>
     </div>
     <div class="card-body">
@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="button" id="goto" data-bind="attr:{href:goto}" class="btn btn-light">
+        <button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">
             EDITAR
         </button>
         <i id="verified" class="align-middle" style="font-size:26px;"></i>

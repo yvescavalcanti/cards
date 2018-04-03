@@ -75,7 +75,7 @@ function DonutChart() {
             // ===========================================================================================
             // add text labels
             
-            var label = svg.select('.labelName').datum(dados).selectAll('text')
+            /*var label = svg.select('.labelName').datum(dados).selectAll('text')
                 .data(pie)
               .enter().append('text')
                 .attr('dy', '.35em')
@@ -97,12 +97,12 @@ function DonutChart() {
                 .style('text-anchor', function(d) {
                     // if slice centre is on the left, anchor text to start, otherwise anchor to end
                     return (midAngle(d)) < Math.PI ? 'start' : 'end';
-                });
+                });*/
             // ===========================================================================================
 
             // ===========================================================================================
             // add lines connecting labels to slice. A polyline creates straight lines connecting several points
-            var polyline = svg.select('.lines').datum(dados)
+            /*var polyline = svg.select('.lines').datum(dados)
                 .selectAll('polyline')
                 .data(pie)
               .enter().append('polyline')
@@ -112,7 +112,7 @@ function DonutChart() {
                     var pos = outerArc.centroid(d);
                     pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
                     return [arc.centroid(d), outerArc.centroid(d), pos]
-                });
+                });*/
             // ===========================================================================================
 
             // ===========================================================================================

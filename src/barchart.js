@@ -1,30 +1,64 @@
+/*function loadShadow(selection){// filters go in defs element
+    selection.each(function(){
+        var svg = d3.select(this);
+        var defs = svg.append("defs");
+        
+        // create filter with id #drop-shadow
+        // height=130% so that the shadow is not clipped
+        var filter = defs.append("filter")
+            .attr("id", "drop-shadow")
+            .attr("height", "100%");
+        
+        // SourceAlpha refers to opacity of graphic that this filter will be applied to
+        // convolve that with a Gaussian with standard deviation 3 and store result
+        // in blur
+        filter.append("feGaussianBlur")
+            .attr("in", "SourceAlpha")
+            .attr("stdDeviation", 5)
+            .attr("result", "blur");
+        
+        // translate output of Gaussian blur to the right and downwards with 2px
+        // store result in offsetBlur
+        filter.append("feOffset")
+            .attr("in", "blur")
+            .attr("dx", 1)
+            .attr("dy", 0)
+            .attr("result", "offsetBlur");
+        
+        // overlay original SourceGraphic over translated blurred opacity by using
+        // feMerge filter. Order of specifying inputs is important!
+        var feMerge = filter.append("feMerge");
+        
+        feMerge.append("feMergeNode")
+            .attr("in", "offsetBlur")
+        feMerge.append("feMergeNode")
+            .attr("in", "SourceGraphic");
+    });
 
+}*/
 
-function BarChart(){
+define('barchart', function(){
+    return function BarChart(){
     var width, height;
     var margin = {top:10, right:10, bottom:20, left:10};
     var plotHeight, plotWidth;
     var svg;
     var plotArea;
-    var x,y,xf,yf,xs = d3.scaleBand(),ys=d3.scaleLinear();
-    var dados = [];
-    var updateData;
+    var x,y,xf,yf,xs,ys;
+    var dados;
     function chart(selection){
         selection.each(function(){
             var el = d3.select(this);
             el.html("");
             var limits = el.node().getBoundingClientRect();
-            console.log(limits);
             width = limits.width;
             height = limits.height;
             plotHeight = height - margin.top - margin.bottom;
             plotWidth = width - margin.left - margin.right;
             svg = el.append('svg').attr('width',width).attr('height',height);
             //svg.call(loadShadow);
-            console.log("height:"+height);
             plotArea = svg.append('g')
                 .attr("transform", "translate("+margin.left+","+margin.top+")");
-            if(dados!==[]){
             xs.rangeRound([0,plotWidth]).domain(dados.map(function(d){return xf(d);}))
             .padding(0.2);
             ys.range([plotHeight,0]).domain([0,d3.max(dados,function(d){return yf(d)})]);
@@ -39,8 +73,7 @@ function BarChart(){
                 .attr('y', function(d){return ys(yf(d));})
                 .attr('width', xs.bandwidth())
                 .attr('height',function(d){return plotHeight - ys(yf(d));});
-            }
-             
+                //.style("filter", "url(#drop-shadow)");
             });
     }
 
@@ -69,10 +102,7 @@ function BarChart(){
     }
 
     chart.dados = function(d){
-        if(!arguments.length) return dados;
-        else dados = d;
-        if(typeof updateData === 'function')
-            updateData();
+        dados = d;
         return chart;
     }
 
@@ -92,7 +122,6 @@ function BarChart2(){
         selection.each(function(){
             draw = function(){
             var el = d3.select(this);
-            //console.log(el);
             el.html("");
             var limits = el.node().getBoundingClientRect();
             width = limits.width;
@@ -160,3 +189,4 @@ function BarChart2(){
     return chart;
 };
 
+});

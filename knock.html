@@ -7,20 +7,10 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
     <style>
-        .btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
-}   
-    .green{
-        color:green
-    }
+    
 
     svg{
         border:1px dotted cyan;
@@ -29,11 +19,14 @@
         border-top-left-radius:0px;
         border-top-right-radius:0px;
         min-height: 200px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
     .card-header{
         background-color: white;
         border-bottom:none;
+        display:flex;
+        justify-content:space-between;
         /*border-top:lightsteelblue 0.2em solid;*/
     }
 
@@ -51,7 +44,7 @@
 
     
     .card-body{
-        
+        border:1px dotted red;    
         height:6em;
         padding:0em 1.25em;
     }
@@ -59,17 +52,13 @@
         font-size:2.5em;
     }
 
-    .svgheight{
-        height:100%;
-    }
-
     .variation{
         font-size:large;
         text-align: center;
-        min-height:27px;
+        
     }
 
-    #grafico{
+    .graph{
         min-height:96px;
         padding:0;
     }
@@ -108,64 +97,18 @@
 
     <title>Hello, world!</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>-->
+    <script src="knockout-3.4.2.js"></script>
     </head>
     <body>
     
     <div class="container-fluid">
-        <!-- Nav tabs -->
-<!-- -Abas para menu Pecuária
-     - Cada aba recebe um número definido de cards -->
-<ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#dist" role="tab">Distribuição</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#efpecu" role="tab">Efetivo Pecuario</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#movimento" role="tab">Movimentação</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#reproducao" role="tab">Reprodução</a>
-        </li>
-      </ul>
-      
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div class="tab-pane active" id="dist" role="tabpanel">
-            <!-- tags cards devem conter a classe card e um id único-->
-            <div class="card-columns" id="distribuicao">
-                <card-widget id="nascimentos" params="card:$data"></card-widget>
-                <card-widget id="desmame" params="card:$data"></card-widget>
-                <card-widget id="mortes" params="card:$data"></card-widget>
-                <card-widget id="abates" params="card:$data"></card-widget>
-            </div>
+        <div class="card-columns">
+        <card-widget-two id="yves" params="model:dist5"></card-widget-two>
+        	<card-widget id="teste-yves" params="model:dist4"></card-widget>
+
+        	<card-widget id="teste" params="model:dist6"></card-widget>
         </div>
-        <div class="tab-pane" id="efpecu" role="tabpanel">
-            <!-- tags cards devem conter a classe card e um id único-->
-            <div class="card-columns" id="efetivo">
-                <div class="card shadow" title="Geral" id="estoque-geral"></div>
-                <div class="card shadow" id="ano1EstoqueLabelName"></div>
-                <div class="card shadow" id="ano2EstoqueLabelName"></div>
-                <div class="card shadow" title="Área" id="area-geral"></div>
-                <div class="card shadow" id="ano1AreaLabelName"></div>
-                <div class="card shadow" id="ano2AreaLabelName"></div>
-            </div>
-        </div>
-        <div class="tab-pane" id="movimento" role="tabpanel">
-            <div class="card-columns">
-                <div class="card shadow" title="Entrada" id="entrada"></div>
-                <div class="card shadow" title="Saída" id="saida"></div>
-            </div>
-        </div>
-        <div class="tab-pane" id="reproducao" role="tabpanel">
-            <div class="card-columns">
-                <div class="card shadow" id="monta-toque"></div>
-                <div class="card shadow" id="nascimentos-desmame"></div>
-            </div>
-        </div>
-      </div>
     </div>
         
                 
@@ -210,106 +153,136 @@ var testData = [
   {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
   {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
 ];
-ko.bindingHandlers.lineChart = {
+ko.bindingHandlers.drawChart = {
         
     init: function(element,valueAccessor) {
         "use strict";
         var self = this;
         var values = ko.unwrap(valueAccessor());
-        //values.metodo
         window.addEventListener("resize", function(){d3.select(element).call(values.metodo);});
 
     },
     update: function(element, valueAccessor,allBindings) {
         "use strict";
-        //var dados = (valueAccessor())();
-        //console.log(dados);
-        //var b = new BarChart().dados(dados).xScale(d3.scaleBand())
-        //.yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
-        //.yFunction(function(d){return d.value;});
         var metodo = ko.unwrap(valueAccessor()).metodo;
-        var dados = ko.unwrap(valueAccessor()).data;
-        //console.log(metodo);
-        d3.select(element).call(metodo.dados(dados()));
+        if(metodo){
+            var dados = ko.unwrap(valueAccessor()).data;
+            d3.select(element).call(metodo.dados(dados()));
+        }
         
     }
 };
-    ko.components.register('linechart',{
-        viewModel: function(w,h){
-            this.width = w;
-            this.height = h;
-        },
-        template:'<svg data-bind="{attr:{width:width,height" '
-    });
+    
+function CardModel(params){
+    var self = this;
+    //console.log(params);
+    this.title = ko.observable(params.title || "");
+    self.status = ko.observable(params.status || 0);
+    self.computedStatus = ko.pureComputed(function(){
+    	if(this.status() === 0)
+    		return 'solid 2px blue';
+    	else
+    		return 'solid 2px red';
+    },self);
+    self.lastdata = ko.observable(params.lastdata || "");
+    self.lastvalue = ko.observable(params.lastvalue || 0);
+    this.dados = ko.observableArray(params.dados||[]);
+    self.gotoClick = function(){
+            $('#content').load(window.urlBase+this.goto);
+    }
+    this.goto = params.goto || "";
+    this.plot = params.plot || null;
+    this.adapter = params.adapter || null;
+    this.caret = "fas fa-caret-up";
+
+    self.verified = ko.observable(params.verificado || -1);
+    self.verify = ko.pureComputed(function(){
+    	switch(self.verified()){
+    		case -1:
+    			return "fas fa-foo";
+    			break;
+    		case 0:
+    			return "fas fa-check";
+    			break;
+    		default:
+    			return "fas fa-exclamation";
+    			break;
+    	}
+    },this);
+   
+
+	this.visible = ko.observable('true');
+    
+} 
+
     ko.components.register('card-widget', {
             viewModel: function(params){
-                this.title = params.card.title;
-                this.goto = params.card.goto;
-                this.dados = params.card.dados;
-                this.plot = params.card.plot;
-                //console.log(this.plot);
+            	return params.model;
             },
             template:
-                '<div class="card shadow">\
-                        <div class="card-header">\
-                            <h5 id="title" data-bind="text:title" class="card-title"></h5>\
-                            <h7 class="card-subtitle mb-2 text-muted" id="lastdate" ></h7>\
-                        </div>\
-                        <div class="card-body">\
-                            <div class="row" id="body-content" style="height:100%;">\
-                            <div class="col-sm-6 my-auto variation" id="variation">\
-                            <span class="card-text" id="lastvariation"></span>\
-                            <i id="lastcaret"></i></div>\
-                            <div id="grafico" class="col-sm-6 graph" data-bind="lineChart:{data:dados,metodo:plot}"></div>\
-                            </div>\
-                        </div>\
-                        <div class="card-footer">\
-                            <button type="button" id="goto" data-bind="attr:{href:goto}" "class="btn btn-light">\
-                                EDITAR\
-                            </button>\
-                            <i id="verified" class="align-middle" style="font-size:26px;"></i>\
-                        </div>\
-                    </div>'
+                '<div class="card" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">\
+		<div class="card-header">\
+			<h4 class="card-title" data-bind="text:title"></h4>\
+			<i id="verified" class="fas fa-question" data-bind="css:verify()" style="font-size:26px;"></i>\
+		</div>	\
+		<div class="card-body row">\
+        	<div class="col-sm-6 my-auto variation" data-bind="style:{color:status(),visibility:visible()}">\
+        	        	<span class="card-text" data-bind="text:lastdata"></span>\
+        	        	<p class ="card-text" data-bind="text:\'R$ \'+lastvalue()"></p>\
+        	        	<i data-bind="css:caret"></i>\
+            </div>\
+        	<div id="grafico" class="col-sm-6 graph" data-bind="drawChart:{data:dados,metodo:plot}">\
+        	</div>\
+		</div> <!-- FIM BODY CARD -->\
+		<div class="card-footer float-right">\
+			<button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">\
+                    EDITAR\
+            </button>\
+		</div><!-- FIM DO CARD FOOTER -->\
+	</div><!-- FIM DO CARD -->'
+        });
+        
+
+function DoubleChartCardModel(params){
+    this.dados2 = ko.observableArray((params.dados2||[]));
+    this.plot2 = params.plot2 || null;
+    CardModel.call(this, params);
+}
+
+DoubleChartCardModel.prototype = Object.create(CardModel.prototype);
+DoubleChartCardModel.prototype.constructor = DoubleChartCardModel;
+
+ko.components.register('card-widget-two', {
+            viewModel: function(params){
+            	return params.model;
+            },
+            template:
+                '<div class="card" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">\
+		<div class="card-header">\
+			<h4 class="card-title" data-bind="text:title"></h4>\
+			<i id="verified" class="fas fa-question" data-bind="css:verify()" style="font-size:26px;"></i>\
+		</div>	\
+		<div class="card-body row">\
+        	<div class="col-sm-4 my-auto variation" data-bind="style:{color:status(),visibility:visible()}">\
+        	        	<span class="card-text" data-bind="text:lastdata"></span>\
+        	        	<p class ="card-text" data-bind="text:\'R$ \'+lastvalue()"></p>\
+        	        	<i data-bind="css:caret"></i>\
+            </div>\
+        	<div id="grafico" class="col-sm-3 graph" data-bind="drawChart:{data:dados2,metodo:plot2}">\
+        	</div>\
+        	<div id="grafico" class="col-sm-3 graph" data-bind="drawChart:{data:dados2,metodo:plot2}">\
+        	</div>\
+		</div> <!-- FIM BODY CARD -->\
+		<div class="card-footer float-right">\
+			<button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">\
+                    EDITAR\
+            </button>\
+		</div><!-- FIM DO CARD FOOTER -->\
+	</div><!-- FIM DO CARD -->'
         });
 
 
-        var lineChartData = [ {date: new Date(), close: 100},
-        {date: new Date("2018-03-23"), close: 110}];
-
-        function CardModel(titulo, dados, gt, pl){
-            this.title = titulo;
-            this.dados = ko.observableArray(dados);
-            this.goto = gt;
-            this.plot = pl;
-        }
-        
-        var dist  = function(c){
-            var self = this;
-            self.cards = c;
-        }
-
-        var nasBar = BarChart().xScale(d3.scaleBand())
-        .yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
-        .yFunction(function(d){return d.value;});
-        var dist  = new CardModel("Nascimentos",testData,"urlteste", nasBar);
-
-        ko.applyBindings(dist, document.getElementById("nascimentos"));
-
-        var desChart = LineChart().xScale(d3.scaleBand())
-        .yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
-        .yFunction(function(d){return d.value;});
-        var dist2  = new CardModel("Desmame",testData,"urlteste", desChart);
-
-        ko.applyBindings(dist2, document.getElementById("desmame"));
-
-        var morteChart = StackedBarChart().xScale(d3.scaleBand())
-        .yScale(d3.scaleLinear()).xFunction(function(d){return d.id;})
-        .yFunction(function(d){return d.value;}).keys(['apples','bananas','cherries','dates']);
-        var dist3  = new CardModel("mortes",testData2,"urlteste", morteChart);
-
-        ko.applyBindings(dist3, document.getElementById("mortes"));
-
-
+   
         var dadosD = "Species\tProbability\tError\n\
 Halobacillus halophilus\t0.10069108308662117\t0.045296463390387814\n\
 Staphylococcus epidermidis\t0.04076903848429238\t0.0096463390387814\n\
@@ -317,18 +290,38 @@ Chromobacterium violaceum\t0.10318269548054262\t0.03390387814\n\
 Pseudomonas TKP\t0.05880239155316942\t0.0045296463390387745\n\
 Bacillus subtilis\t0.1908578484310064\t0.0765387676\n\
 Pseudomonas fluorescens\t0.10663641563053275\t0.0045296463390387676\n";
+var dados = [{mes:"Julho", prob:2, erro:4},{mes:"Março", prob:2, erro:4},{mes:"Junho", prob:2, erro:4}];
     var dataD = d3.tsvParse(dadosD);
         var abateChart = DonutChart()
         //.width(960)
         //.height(500)
         .cornerRadius(3) // sets how rounded the corners are on each slice
         .padAngle(0.015) // effectively dictates the gap between slices
-        .variable('Probability')
-        .category('Species');
+        .variable('erro')
+        .category('mes');
         
-        var dist4 = new CardModel("abates",dataD,"urlteste", abateChart);
-        ko.applyBindings(dist4, document.getElementById("abates"));
+         var abChart = DonutChart()
+        //.width(960)
+        //.height(500)
+        .cornerRadius(3) // sets how rounded the corners are on each slice
+        .padAngle(0.015) // effectively dictates the gap between slices
+        .variable('erro')
+        .category('mes');
         
+        var dist4 = new CardModel({title:"teste",dados:dados,goto:"urlteste", plot:abChart});
+        ko.applyBindings(dist4, document.getElementById("teste-yves"));
+ 
+var bChart = BarChart().xFunction(function(d){return d.mes;})
+        .yFunction(function(d){return d.prob;});
+var dist5 = new DoubleChartCardModel({title:"abates",dados:dados,goto:"urlteste", plot:abateChart,dados2:dados,plot2:bChart});     
+ko.applyBindings(dist5, document.getElementById("yves"));
+
+var bt = BarChart().xFunction(function(d){return d.mes;})
+        .yFunction(function(d){return d.prob;});
+
+ var dist6 = new CardModel({title:"teste",dados:dados,goto:"urlteste", plot:bt});
+        ko.applyBindings(dist6, document.getElementById("teste"));
+        dist6.status(1);
         </script>
       </body>
 </html>

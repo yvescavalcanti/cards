@@ -1,7 +1,10 @@
-define(function(require){
-    //function teste(){
-        console.log("teste");
-    //}
+define('principal',['ko'],function(ko){
+    ko.components.register('testando',{
+        template:'<p>{{@lang("messages.nascimentos")}}</p>',
+        viewModel:function(){
 
-    //return teste;
+        }
+    });
+
+    ko.applyBindings();
 });
