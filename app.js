@@ -1,20 +1,18 @@
 // Configure loading modules from the lib directory,
 // except for 'app' ones, which are in a sibling
 // directory.
-requirejs.config({
+require.config({
     baseUrl: 'src',
     paths: {
-        main: '../main',
         text:'../text',
-        ko:'../js/knockout-3.4.2'
-    }/*,
-    config:{
-        main:{
-            valor:global
-        }
-    }*/
+        ko:'../knockout-3.4.2',
+        main: '../main'
+    }
+    
 });
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-requirejs(['main']);
+define('principal', ['main','card-widget'],function(main, models){
+    return function(v){console.log(v);};
+});

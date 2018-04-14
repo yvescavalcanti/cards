@@ -1,20 +1,20 @@
-<div class="card shadow">
+<div class="card" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">
     <div class="card-header">
-        <h5 id="title" data-bind="text:title" class="card-title"></h5>
-        <h7 class="card-subtitle mb-2 text-muted" id="lastdate" ></h7>
-    </div>
-    <div class="card-body">
-        <div class="row" id="body-content" style="height:100%;">
-        <div class="col-sm-6 my-auto variation" id="variation">
-        <span class="card-text" id="lastvariation"></span>
-        <i id="lastcaret"></i></div>
-        <div id="grafico" class="col-sm-6 graph" ></div>
+        <h4 class="card-title" data-bind="text:title"></h4>
+        <i id="verified" class="fas fa-question" data-bind="css:verify()" style="font-size:26px;"></i>
+    </div>	
+    <div class="card-body row">
+        <div class="col-sm-6 my-auto variation" data-bind="style:{color:status(),visibility:visible()}">
+                    <span class="card-text" data-bind="text:lastdata"></span>
+                    <p class ="card-text" data-bind="text:\'R$ \'+lastvalue()"></p>
+                    <i data-bind="css:caret"></i>
         </div>
-    </div>
-    <div class="card-footer">
+        <div id="grafico" class="col-sm-6 graph" data-bind="drawChart:{data:dados,metodo:plot}">
+        </div>
+    </div> <!-- FIM BODY CARD -->
+    <div class="card-footer float-right">
         <button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">
-            EDITAR
+                EDITAR
         </button>
-        <i id="verified" class="align-middle" style="font-size:26px;"></i>
-    </div>
-</div>
+    </div><!-- FIM DO CARD FOOTER -->
+</div><!-- FIM DO CARD -->

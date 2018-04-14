@@ -1,5 +1,9 @@
-
-
+function ttteste(d){
+    console.log(this.xs(d));
+}
+/**
+ * 
+ */
 function BarChart(){
     var width, height;
     var margin = {top:10, right:10, bottom:20, left:10};
@@ -39,12 +43,22 @@ function BarChart(){
                     .attr('x', function(d){return xs(xf(d));})
                     .attr('y', function(d){return ys(yf(d));})
                     .attr('width', xs.bandwidth())
-                    .attr('height',function(d){return plotHeight - ys(yf(d));});
+                    .attr('height',function(d){return plotHeight - ys(yf(d));})
+                    .on('mouseover',function(d){
+                        //var x = xs(xf(d));
+                        //var y = ys(yf(d));
+                        console.log("mouseover");
+                        ttteste.bind(this)(d);
+                    });
                 }
             } // fim do if dados.length
             });
     }
 
+    /**
+     * @method xFunction Define função a ser aplicada a um dado para extrair valor 
+     * referente ao eixo x.
+     */
     chart.xFunction = function(f){
         if(!arguments.length) return x;
         else xf = f;

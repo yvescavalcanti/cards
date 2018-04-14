@@ -1,11 +1,39 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: card-widget.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: card-widget.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file card-widget
  * @author LAPIDATA TECNOLOGIA EM SERVICOS EMPRESARIAIS LTDA
  * @version 1.0
  * 
- * <h3>Aplicação</h3>
+ * &lt;h3>Aplicação&lt;/h3>
  * Geração de cards customizados com um ou dois gráficos.
- * Os cards são denominados <strong>card-widget</strong> e <strong>card-widget-two</strong>,
+ * Os cards são denominados &lt;strong>card-widget&lt;/strong> e &lt;strong>card-widget-two&lt;/strong>,
  * possuindo o primeiro um gráfico e segundo dois.
  * Os gráficos podem ser de qualquer tipo desde que sigam o padrão apresentado pelos
  * já desenvolvidos.
@@ -44,7 +72,7 @@ define('card-widget',['ko','d3'],function(ko,d3){
                 d3.select(element).append('div').attr('class','g-message').html("Buscando dados no servidor...");
             break;
             case 2:
-                if(metodo && dados().length>0)
+                if(metodo &amp;&amp; dados().length>0)
                     d3.select(element).call(metodo.dados(dados()));
                 else
                     d3.select(element).html("Clique em editar");
@@ -100,7 +128,7 @@ function CardModel(params){
             $('#content').load(window.urlBase+this.goto);
     }
     this.goto = params.goto || "";
-    this.moreIsGood = params.moreIsGood && true;
+    this.moreIsGood = params.moreIsGood &amp;&amp; true;
     this.plot = params.plot || null;
     this.adapter = params.adapter || null;
     this.caret = ko.pureComputed(function(){
@@ -113,7 +141,7 @@ function CardModel(params){
     this.goodOrBad = ko.pureComputed(function(){
         if(this.valuetwo()>0)
             return this.moreIsGood ? "blue" : "red";
-        else if(this.valuetwo()<0)
+        else if(this.valuetwo()&lt;0)
             return this.moreIsGood ? "red" : "blue";
     },this);
 
@@ -142,29 +170,29 @@ function CardModel(params){
             	return params.model;
             },
             template:
-                '<div class="card mt-2" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">\
-		<div class="card-header">\
-			<h4 class="card-title" data-bind="text:title"></h4>\
-			<i id="verified" class="" data-bind="css:verify()" style="font-size:26px;"></i>\
-		</div>	\
-		<div class="card-body row" data-bind="visible:dados().length>0">\
-        	<div class="col-sm-6 my-auto variation" data-bind="style:{color:goodOrBad(),visibility:visible()}">\
-        	        	<p class="card-text" data-bind="text:getValueOne()"></p>\
-        	        	<span class ="card-text" data-bind="text:getValueTwo()"></span>\
-        	        	<i data-bind="css:caret()" class=""></i>\
-            </div>\
-        	<div id="grafico" class="col-sm-6 graph" data-bind="drawChart:{stage:stage,data:dados,metodo:plot}">\
-        	</div>\
-        </div>\
-        <div class="card-body" data-bind="visible:dados().length===0">\
-            <div class="alert alert-success">Clique em editar para adicionar registros</div>\
-        </div><!-- FIM BODY CARD -->\
-		<div class="card-footer float-right">\
-			<button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">\
+                '&lt;div class="card mt-2" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">\
+		&lt;div class="card-header">\
+			&lt;h4 class="card-title" data-bind="text:title">&lt;/h4>\
+			&lt;i id="verified" class="" data-bind="css:verify()" style="font-size:26px;">&lt;/i>\
+		&lt;/div>	\
+		&lt;div class="card-body row" data-bind="visible:dados().length>0">\
+        	&lt;div class="col-sm-6 my-auto variation" data-bind="style:{color:goodOrBad(),visibility:visible()}">\
+        	        	&lt;p class="card-text" data-bind="text:getValueOne()">&lt;/p>\
+        	        	&lt;span class ="card-text" data-bind="text:getValueTwo()">&lt;/span>\
+        	        	&lt;i data-bind="css:caret()" class="">&lt;/i>\
+            &lt;/div>\
+        	&lt;div id="grafico" class="col-sm-6 graph" data-bind="drawChart:{stage:stage,data:dados,metodo:plot}">\
+        	&lt;/div>\
+        &lt;/div>\
+        &lt;div class="card-body" data-bind="visible:dados().length===0">\
+            &lt;div class="alert alert-success">Clique em editar para adicionar registros&lt;/div>\
+        &lt;/div>&lt;!-- FIM BODY CARD -->\
+		&lt;div class="card-footer float-right">\
+			&lt;button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">\
                     EDITAR\
-            </button>\
-		</div><!-- FIM DO CARD FOOTER -->\
-	</div><!-- FIM DO CARD -->'
+            &lt;/button>\
+		&lt;/div>&lt;!-- FIM DO CARD FOOTER -->\
+	&lt;/div>&lt;!-- FIM DO CARD -->'
         });
         
 /**
@@ -174,7 +202,7 @@ function CardModel(params){
  * devem/podem ser definidos
  * @param {Chart} params.plot2 Instância de gráfico que será utilizado para o segundo
  * gráfico exibido no card
- * @param {Array.<Object>} params.dados2 Array de entidades que fornecerão valores para
+ * @param {Array.&lt;Object>} params.dados2 Array de entidades que fornecerão valores para
  * o segundo gráfico do card. Default = []
  */
 function DoubleChartCardModel(params){
@@ -191,32 +219,55 @@ ko.components.register('card-widget-two', {
             	return params.model;
             },
             template:
-                '<div class="card" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">\
-		<div class="card-header">\
-			<h4 class="card-title" data-bind="text:title"></h4>\
-			<i id="verified" class="" data-bind="css:verify()" style="font-size:26px;"></i>\
-		</div>	\
-		<div class="card-body row" data-bind="visible:dados().length>0">\
-        	<div class="col-sm-4 my-auto variation" data-bind="style:{color:goodOrBad(),visibility:visible()}">\
-        	        	<p class="card-text" data-bind="text:getValueOne()"></p>\
-        	        	<span class ="card-text" data-bind="text:getValueTwo()"></span>\
-        	        	<i data-bind="css:caret()"></i>\
-            </div>\
-        	<div id="grafico" class="col-sm-4 graph" data-bind="drawChart:{stage:stage, data:dados,metodo:plot}">\
-        	</div>\
-        	<div id="grafico" class="col-sm-4 graph" data-bind="drawChart:{stage:stage, data:dados2,metodo:plot2}">\
-        	</div>\
-        </div>\
-        <div class="card-body" data-bind="visible:dados().length===0">\
-            <div class="alert alert-success">Clique em editar para adicionar registros</div>\
-        </div><!-- FIM BODY CARD -->\
-		<div class="card-footer float-right">\
-			<button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">\
+                '&lt;div class="card" data-bind="style:{\'border-top\':computedStatus()}" id="base-card">\
+		&lt;div class="card-header">\
+			&lt;h4 class="card-title" data-bind="text:title">&lt;/h4>\
+			&lt;i id="verified" class="" data-bind="css:verify()" style="font-size:26px;">&lt;/i>\
+		&lt;/div>	\
+		&lt;div class="card-body row" data-bind="visible:dados().length>0">\
+        	&lt;div class="col-sm-4 my-auto variation" data-bind="style:{color:goodOrBad(),visibility:visible()}">\
+        	        	&lt;p class="card-text" data-bind="text:getValueOne()">&lt;/p>\
+        	        	&lt;span class ="card-text" data-bind="text:getValueTwo()">&lt;/span>\
+        	        	&lt;i data-bind="css:caret()">&lt;/i>\
+            &lt;/div>\
+        	&lt;div id="grafico" class="col-sm-4 graph" data-bind="drawChart:{stage:stage, data:dados,metodo:plot}">\
+        	&lt;/div>\
+        	&lt;div id="grafico" class="col-sm-4 graph" data-bind="drawChart:{stage:stage, data:dados2,metodo:plot2}">\
+        	&lt;/div>\
+        &lt;/div>\
+        &lt;div class="card-body" data-bind="visible:dados().length===0">\
+            &lt;div class="alert alert-success">Clique em editar para adicionar registros&lt;/div>\
+        &lt;/div>&lt;!-- FIM BODY CARD -->\
+		&lt;div class="card-footer float-right">\
+			&lt;button type="button" id="goto" data-bind="click:gotoClick" class="btn btn-light">\
                     EDITAR\
-            </button>\
-		</div><!-- FIM DO CARD FOOTER -->\
-	</div><!-- FIM DO CARD -->'
+            &lt;/button>\
+		&lt;/div>&lt;!-- FIM DO CARD FOOTER -->\
+	&lt;/div>&lt;!-- FIM DO CARD -->'
 });
 
 return {Card : CardModel, DoubleCard: DoubleChartCardModel};
 });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-card-widget.html">card-widget</a></li><li><a href="module-donutchart.html">donutchart</a></li><li><a href="module-linechart.html">linechart</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-card-widget-CardModel.html">CardModel</a></li><li><a href="module-card-widget-DoubleChartCardModel.html">DoubleChartCardModel</a></li><li><a href="module-linechart-LineChart.html">LineChart</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 14 2018 00:40:45 GMT-0300 (-03)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

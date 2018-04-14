@@ -1,38 +1,39 @@
-module.exports = function(grunt){
+/*global module:false*/
+'use strict';
 
-    grunt.initConfig({
-        handlebars:{
-            compile:{
-                options:{
-                    namespace:'dashcard'
-                },
-                files:{
-                    'templates/cards-tmpl.js': 'hb/cards.hbs'
-                }
-            }
-        },
-        uglify:{
-            cardwidget:{
-                files:{
-                    'index.min.js':'index.js'
-                }
-            }
-        },
-        browserify:{
-            dist:{
-                files:{
-                    'bundle.js':'index.js'
-                }
-                
-            }
+var opt = require('./options');
+
+module.exports = function(grunt) {
+  // Project configuration.
+  grunt.initConfig({
+
+    clean: {
+      release: 'build'
+    },
+
+    requirejs: {
+      compile: {
+        options: opt
+      }
+    },
+
+    /*cssmin: {
+      compile: {
+        files: {
+          'www-release/css/style.css': 'www-release/css/style.css',
+          'www-release/css/bootstrap.css': 'www-release/css/bootstrap.css',
+          'www-release/css/bootstrap-responsive.css': 'www-release/css/bootstrap-responsive.css'
         }
-    });
-
-    grunt.loadNpmTasks('grunt-contrib-handlebars');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-browserify');
-
-    grunt.registerTask('compile-templates',['handlebars']);
-    grunt.registerTask('minify',['uglify:cardwidget']);
-    grunt.registerTask('default',['uglify:cardwidget','handlebars']);
-};
+      }
+    }*/
+  });
+   // Load tasks from NPM
+   grunt.loadNpmTasks('grunt-contrib-clean');
+   grunt.loadNpmTasks('grunt-contrib-requirejs');
+   //grunt.loadNpmTasks('grunt-contrib-cssmin');
+ 
+   // Default task.
+ grunt.registerTask('default', ['clean', 'requirejs']);
+ 
+}
+ 

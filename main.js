@@ -1,10 +1,13 @@
-define('principal',['ko'],function(ko){
+define('main',['ko','module'],function(ko,module){
     ko.components.register('testando',{
-        template:'<p>{{@lang("messages.nascimentos")}}</p>',
+        template:'<p>this is a template</p>',
         viewModel:function(){
 
         }
     });
-
-    ko.applyBindings();
+    console.log("CAVALCANTI");
+    var model = function(){};
+    ko.applyBindings(new model());
+    
+    return function(v){console.log(v)};
 });

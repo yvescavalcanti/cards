@@ -1,0 +1,88 @@
+
+    .svgheight{
+        height:100%;
+    }
+
+    .card{
+        border-top-left-radius:0px;
+        border-top-right-radius:0px;
+        min-height: 12em;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .card-body{
+      
+        height:10em;
+        padding:0em 1.25em;
+    }
+
+    
+    .card-header{
+        display:flex;
+        background-color: white;
+        border-bottom:none;
+        justify-content: space-between;
+        font-size:4em;
+        /*border-top:lightsteelblue 0.2em solid;*/
+    }
+
+
+   
+
+    .card-footer{
+        background-color: white;
+        border-top:none;
+        text-anchor: middle;
+        padding:0.5em 1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+    }
+
+
+    .graph{
+        height:100%;
+        width:100%;
+        padding:0;
+      
+    }
+
+    .bar{
+        stroke:lightsteelblue;
+        fill:#458b74;
+    }
+
+    .variation{
+        font-size:large;
+        text-align: center;
+        min-height:27px;
+    }
+
+    .card-text{
+        font-size:20px;
+    }
+
+    .fa-caret-up{
+        font-size:30px;
+        
+    }
+
+    .fa-caret-down{
+        font-size:30px;
+        
+    }
+    
+    .line{
+    	fill:none;
+    	stroke:#1f77b4;
+    	stroke-width:2px;
+    }
+    
+    .circle{
+    	fill:white;
+    	stroke:#1f77b4;
+    	stroke-width:2px;
+    }
+    
+    .

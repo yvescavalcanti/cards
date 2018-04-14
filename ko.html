@@ -6,21 +6,63 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>-->
     <script>
-        var global = 1238;
+        var require = {config:{main:{nome:"YVES"}}};
     </script>
-    <script src="saida.js"></script>
-    <!--<script data-main="build/dist.js" src="require.js"></script>
-    <div class="card-columns">
+    <!--<script src="saida.js"></script>-->
+    <script src="require.js">
+        
+    </script>
+    
+    <!--<div class="card-columns">
     <card-widget id="nascimentos" params="card:$data"></card-widget>
     </div>
     <testando></testando>
 -->
+    
 </head>
 <body>
-
-<tmpl></tmpl>
+<card-widget id="nascimentos" params="model:$data"></card-widget>
 
 </body>
+<script>
+        require.config({
+            baseUrl:'src',
+            paths:{
+                ko:'../knockout-3.4.2',
+                text:'../text',
+                jquery:'jquery-3.3.1.min',
+                d3: "http://d3js.org/d3.v4.min"
+            },
+
+        });
+        require(["ko","card-widget","barchart",'d3'],function(ko,models, barchart,d3){
+            var dados = [{mes:"Julho", prob:200, erro:4, verificado:0},{mes:"Março", prob:400, erro:8, verificado:0},{mes:"Junho", prob:250, erro:4,verificado:1}];
+            //dados = [];
+            var modelo = new models.Card({title:"nascimentos",status:1,stage:0,
+                formatValueOne:function(d){
+                    return d3.format(".2%")(d);
+                },
+                plot:barchart().xFunction(function(d){return d.mes;})
+                .yFunction(function(d){return d.prob;})
+                .toolTipText(function(v){
+                	return v.x+"<br/>R$"+d3.format(".2f")(v.y);
+                })
+                });
+            
+            ko.applyBindings(modelo, document.getElementById("nascimentos"));
+            modelo.stage(1);
+            
+            setTimeout(function(){
+                modelo.dados(dados);
+                modelo.valueone(100);
+                modelo.valuetwo(10);
+                modelo.stage(2);
+            },500);
+            //var b = .dados(dados);
+            //d3.select('#teste').call(b);
+        });
+    </script>   
 </html>

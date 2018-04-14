@@ -1,1 +1,1 @@
-define("principal",["ko"],function(n){n.components.register("testando",{template:'<p>{{@lang("messages.nascimentos")}}</p>',viewModel:function(){}}),n.applyBindings()}),define("main",function(){}),requirejs.config({baseUrl:"src",paths:{main:"../main",text:"../text",ko:"../js/knockout-3.4.2"}}),requirejs(["main"]),define("../app",function(){});
+require.config({baseUrl:"src",paths:{text:"../text",ko:"../knockout-3.4.2",main:"../main"}}),define("principal",["main","card-widget"],function(n,i){return function(n){console.log(n)}}),define("../app",function(){});
